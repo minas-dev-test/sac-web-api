@@ -1,0 +1,12 @@
+# sudo a2enmod modrewrite
+
+#Options +FollowSymLinks
+
+#RewriteEngine On
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteRule ^(.*)$ index.php?path=$1 [NC,L]
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !index.php
+RewriteRule .* index.php?path=$0 [QSA,L]
