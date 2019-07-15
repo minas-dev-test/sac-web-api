@@ -8,8 +8,9 @@
     include_once './DataAccess/DataAccess.php';
     include_once './Controllers/Controller.php';
 
+    header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
-    http_response_code(200);
+    header("HTTP/1.1 200 OK");
 
     $router = new Router();
 
@@ -47,6 +48,10 @@
         return $controller->excluirTicket($parameters);
     });
     
+    $router->on('OPTIONS', 'tickets', function () {
+    });
+    
+
     $uri = '/'.$_GET['path']; // Recupera o caminho
 
     $value = $router->run($_SERVER['REQUEST_METHOD'], $uri);
@@ -86,6 +91,9 @@
         }else{
             http_response_code(204);            
         }
+    }else if($_SERVER['REQUEST_METHOD'] == 'OPTIONS'){
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+        header("Access-Control-Max-Age: 86400"); 
     }
 
 ?>
