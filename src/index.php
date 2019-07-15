@@ -11,52 +11,56 @@
     header("Content-Type: application/json; charset=UTF-8");
     http_response_code(200);
 
-    $router = new Router($_REQUEST);
+    $router = new Router();
 
-    //Cria as rotas
-    $router->on('GET', 'api/sac', function () {
+    // Cria as rotas
+    $router->on('GET', 'tickets', function () {
         $dataAccess = new DataAccess();
         $controller = new Controller($dataAccess);
         return $controller->getTodosTickets();
     });
     
-    $router->on('POST', 'api/sac', function () {
+    $router->on('POST', 'tickets', function () {
         $dataAccess = new DataAccess();
         $controller = new Controller($dataAccess);
-        $json = file_get_contents('php://input');
+        $json = file_get_contents('php://input'); // Pega o body da requisição como uma string
         $data = json_decode($json); 
-        $nomeDoUsuario = $data->nome;
-        $email = $data->email;
-        $telefone = $data->telefone;
-        $mensagem = $data->mensagem;
+        $nomeDoUsuario = $data->userName;
+        $email = $data->userEmail;
+        $telefone = $data->userPhone;
+        $mensagem = $data->userMessage;
         return $controller->abrirTicket($nomeDoUsuario, $email, $telefone, $mensagem);
     });
     
-    $router->on('PUT', 'api/sac/(\w+)', function ($parameters) {
+    $router->on('PUT', 'tickets/(\w+)', function ($parameters) {
         $dataAccess = new DataAccess();
         $controller = new Controller($dataAccess);
         return $controller->fecharTicket($parameters);
     });
+
+    $router->on('DELETE', 'tickets/(\w+)', function ($parameters) {
+        $dataAccess = new DataAccess();
+        $controller = new Controller($dataAccess);
+        return $controller->excluirTicket($parameters);
+    });
     
-    //Recupera o caminho
-    $uri = '/'.$_GET['path'];
+    $uri = '/'.$_GET['path']; // Recupera o caminho
 
     $value = $router->run($_SERVER['REQUEST_METHOD'], $uri);
 
-    //Transforma as informações retornadas em um array
-    if($_SERVER['REQUEST_METHOD'] == 'GET'){
+    if($_SERVER['REQUEST_METHOD'] == 'GET'){ // Transforma as informações em JSON
         $outp = [];
         if(is_array($value)){
             foreach($value as $key => $line){
-                $outp[$key]["ticket_id"] = $line[0];
-                $outp[$key]["nome"] = $line[1];
-                $outp[$key]["email"] = $line[2];
-                $outp[$key]["telefone"] = $line[3];
-                $outp[$key]["mensagem"] = $line[4];
-                $outp[$key]["aberto"] = $line[5];
+                $outp[$key]["ticketId"] = $line[0];
+                $outp[$key]["userName"] = $line[1];
+                $outp[$key]["userEmail"] = $line[2];
+                $outp[$key]["userPhone"] = $line[3];
+                $outp[$key]["userMessage"] = $line[4];
+                $outp[$key]["ticketStatus"] = $line[5];
             }
             echo json_encode($outp);
-        }else{ //Caso o db esteja vazio
+        }else{ // Caso o db esteja vazio ou o caminho está incorreto
             http_response_code(204);
         }
     }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -68,6 +72,14 @@
     }else if($_SERVER['REQUEST_METHOD'] == 'PUT'){
         if($value == 0){
             http_response_code(500);
+        }else{
+            http_response_code(204);
+        }
+    }else if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
+        if($value == 0){
+            http_response_code(500);
+        }else{
+            http_response_code(204);            
         }
     }
 

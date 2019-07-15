@@ -33,6 +33,10 @@
         public function fecharTicket($id){
             return $this->dataAccess->fecharTicket($id);
         }
+
+        public function excluirTicket($id){
+            return $this->dataAccess->excluirTicket($id);
+        }
     }
 
 

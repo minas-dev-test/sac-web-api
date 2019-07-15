@@ -18,5 +18,5 @@ Por padrão o projeto é inicializado na porta 5000 (<http://localhost:5000/api/
 
 - `/api/sac`
   - `GET`: Obtém todos os tickets de SAC
-  - `POST`: Cadastra um novo ticket passando os campos `nomeDoUsuario`, `email`,`telefone`, `mensagem`
+  - `POST`: Cadastra um novo ticket passando os campos `userName`, `userEmail`,`userPhone`, `userMessage`
   - `PUT`: Atualiza o status de um ticket passando `id`

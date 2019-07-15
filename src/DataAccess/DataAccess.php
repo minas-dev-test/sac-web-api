@@ -15,7 +15,7 @@
         private $conn;
 
         function __construct(){
-            // Recupera as variáveis de ambiente criadas no arquivo docker-compose
+            // Recupera as variáveis de ambiente criadas no arquivo docker-compose.yml
             $explode_result = explode(";", $_ENV["ConnectionString"]);
             $env_variables = [];
             foreach($explode_result as $variable){
@@ -28,10 +28,8 @@
             $this->password = $env_variables["Pwd"];
             $this->database = $env_variables["Database"];
 
-            //Cria a conexão com o bd
             $this->conn = new \mysqli($this->host, $this->user, $this->password, $this->database);
             
-            //Testa se a conexão foi bem sucedida
             if ($this->conn->connect_errno) {
                 echo "Failed to connect to MySQL: " . $this->conn->connect_error;
             }
@@ -43,19 +41,14 @@
                     VALUES
                         (?,?,?,?,?);";
             
-            //Prepara statement
             $stmt = $this->conn->prepare($sql);
 
             if(!$stmt){
                 return 0;
             }
 
-            //Bind parametros
             $stmt->bind_param("sssss",$ticket->ticketId,$ticket->nome,$ticket->email,$ticket->telefone,$ticket->mensagem);
-
-            //Executa statement
             $stmt->execute();
-
             $stmt->close();
 
             return 1;
@@ -92,12 +85,26 @@
             }
 
             $stmt->bind_param("s",$id);
-
             $stmt->execute();
-
             $stmt->close();
 
             return $id;
+        }
+
+        public function excluirTicket($id){
+            $sql = "DELETE FROM sac_web_api.ticket WHERE ticket_id = ?";
+
+            $stmt = $this->conn->prepare($sql);
+
+            if(!$stmt){
+                return 0;
+            }
+            
+            $stmt->bind_param("s",$id);
+            $stmt->execute();
+            $stmt->close();
+
+            return $id;         
         }
 
     }
