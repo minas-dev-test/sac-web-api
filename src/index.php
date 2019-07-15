@@ -25,11 +25,14 @@
         $controller = new Controller($dataAccess);
         $json = file_get_contents('php://input'); // Pega o body da requisição como uma string
         $data = json_decode($json); 
-        $nomeDoUsuario = $data->userName;
+        $nome = $data->userName;
         $email = $data->userEmail;
         $telefone = $data->userPhone;
         $mensagem = $data->userMessage;
-        return $controller->abrirTicket($nomeDoUsuario, $email, $telefone, $mensagem);
+        if($nome == NULL || $email == NULL || $telefone == NULL || $mensagem == NULL){
+            return -1;
+        }
+        return $controller->abrirTicket($nome, $email, $telefone, $mensagem);
     });
     
     $router->on('PUT', 'tickets/(\w+)', function ($parameters) {
@@ -66,6 +69,8 @@
     }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if($value == 0 ){
             http_response_code(500);    
+        }else if($value == -1){
+            http_response_code(400);                
         }else{
             http_response_code(201);    
         }
