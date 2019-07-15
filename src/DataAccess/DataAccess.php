@@ -76,7 +76,9 @@
             $result = $result->fetch_all();
             
             $this->conn->close();
-
+            if($result == NULL){
+                return 0;
+            }
             return $result;
         }
 

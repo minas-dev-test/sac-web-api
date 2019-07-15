@@ -31,20 +31,25 @@ class Router{
     function run($method, $uri){
         $method = strtolower($method);
         if(!isset($this->routes[$method])){
+            http_response_code(400);    
             return null;
         }
 
         foreach($this->routes[$method] as $route => $callback){
             if(preg_match($route, $uri, $parameters)){
                 array_shift($parameters);
-                if($parameters[0] != NULL){
-                    return call_user_func_array($callback, $parameters);
-                }else{
-                    return call_user_func($callback, $this->request_data);
-                }
+                // if($parameters[0] != NULL){
+                //     return call_user_func_array($callback, $parameters);
+                // }
+                // }else{
+                //     return call_user_func($callback, $this->request_data);
+                // }
+                return call_user_func_array($callback, $parameters);
+
             }
         }
 
+        http_response_code(400);    
         return null;
 
     }
