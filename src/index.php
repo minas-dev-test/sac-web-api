@@ -8,6 +8,8 @@
     include_once './DataAccess/DataAccess.php';
     include_once './Controllers/Controller.php';
 
+    header("Content-Type: application/json; charset=UTF-8");
+
     $router = new Router($_REQUEST);
 
     //Cria as rotas
@@ -38,14 +40,19 @@
 
     $value = $router->run($_SERVER['REQUEST_METHOD'], $uri);
 
+    //Transforma as informações retornadas em um array
+    $outp = [];
     if(is_array($value)){
-        foreach($value as $line){
-            foreach($line as $column){
-                echo $column;
-                echo " | ";
-            }
-            echo "</br>";
+        foreach($value as $key => $line){
+            $outp[$key]["ticket_id"] = $line[0];
+            $outp[$key]["nome"] = $line[1];
+            $outp[$key]["email"] = $line[2];
+            $outp[$key]["telefone"] = $line[3];
+            $outp[$key]["mensagem"] = $line[4];
+            $outp[$key]["aberto"] = $line[5];
         }
     }
+
+    echo json_encode($outp);
 
 ?>

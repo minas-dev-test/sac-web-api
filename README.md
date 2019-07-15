@@ -6,6 +6,7 @@ API de Serviço de atendimento ao cosumidor usando Docker
 
 Tenha em sua máquina instalado o Docker e o Docker Compose. Para iniciar o projeto execute:
 
+    docker-compose build
     docker-compose up
 
 Os serviços de banco de dados e sac-api irão ser inicializados.
@@ -19,10 +20,3 @@ Por padrão o projeto é inicializado na porta 5000 (<http://localhost:5000/api/
   - `GET`: Obtém todos os tickets de SAC
   - `POST`: Cadastra um novo ticket passando os campos `nomeDoUsuario`, `email`,`telefone`, `mensagem`
   - `PUT`: Atualiza o status de um ticket passando `id`
-
-## TODO
-
-- [ ] Auto-inicialização do banco de dadsos (`CREATE TABLE IF NOT EXISTS`)
-- [ ] Permitir pesquisa e filtragem (GET retornando tudo...)
-- [x] Documentação das Rotas
-- [ ] Padronização das Rotas
