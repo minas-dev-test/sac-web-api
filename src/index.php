@@ -31,6 +31,7 @@
         $telefone = $data->userPhone;
         $mensagem = $data->userMessage;
         if($nome == NULL || $email == NULL || $telefone == NULL || $mensagem == NULL){
+            header("invalidField: Campo(s) invalido(s)");
             return -1;
         }
         return $controller->abrirTicket($nome, $email, $telefone, $mensagem);

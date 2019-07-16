@@ -8,11 +8,6 @@ include_once './Controllers/Controller.php';
 
 class Router{
     private $routes = [];
-    // private $request_data;
-
-    // function __construct($request_data){
-    //     $this->request_data = $request_data;            
-    // }
 
     public function on($method, $path, $callback){
         $method = strtolower($method);
@@ -39,12 +34,6 @@ class Router{
         foreach($this->routes[$method] as $route => $callback){
             if(preg_match($route, $uri, $parameters)){
                 array_shift($parameters); // Exclui o match total e deixa só os parâmetros
-                // if($parameters[0] != NULL){
-                //     return call_user_func_array($callback, $parameters);
-                // }
-                // }else{
-                //     return call_user_func($callback, $this->request_data);
-                // }
                 return call_user_func_array($callback, $parameters);
             }
         }

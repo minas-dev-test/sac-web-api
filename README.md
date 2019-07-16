@@ -17,7 +17,7 @@ Por padrão o projeto é inicializado na porta 5000 (<http://localhost:5000/tick
 ## Rotas
 
 - `/tickets`
-  - `GET`: Obtém todos os tickets de SAC
+  - `GET`: Obtém todos os tickets em JSON
   - `POST`: Cadastra um novo ticket passando os campos `userName`, `userEmail`,`userPhone`, `userMessage`
   - `PUT`: Atualiza o status de um ticket passando o `id`
   - `DELETE`: Exclui um ticket passando o `id`
