@@ -6,7 +6,12 @@ API de Serviço de atendimento ao cosumidor usando Docker
 
 Tenha em sua máquina instalado o Docker e o Docker Compose. Para iniciar o projeto execute:
 
+Caso seja a primeira vez:
+
     docker-compose build
+
+Para iniciar:
+
     docker-compose up
 
 Os serviços de banco de dados e sac-api irão ser inicializados.
@@ -18,6 +23,7 @@ Por padrão o projeto é inicializado na porta 5000 (<http://localhost:5000/tick
 
 - `/tickets`
   - `GET`: Obtém todos os tickets em JSON
-  - `POST`: Cadastra um novo ticket passando os campos `userName`, `userEmail`,`userPhone`, `userMessage`
+  - `POST`: Cadastra um novo ticket passando os campos `userName`, `userEmail`,`userPhone`, `userMessage` em formato JSON
   - `PUT`: Atualiza o status de um ticket passando o `id`
   - `DELETE`: Exclui um ticket passando o `id`
+  - `OPTIONS`: Atualmente retorna 200 OK para qualquer requisição

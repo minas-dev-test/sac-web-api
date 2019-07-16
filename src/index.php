@@ -50,6 +50,8 @@
     });
     
     $router->on('OPTIONS', 'tickets', function () {
+        header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+        header("Access-Control-Max-Age: 86400");
     });
     
 
@@ -92,9 +94,6 @@
         }else{
             http_response_code(204);            
         }
-    }else if($_SERVER['REQUEST_METHOD'] == 'OPTIONS'){
-        header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
-        header("Access-Control-Max-Age: 86400"); 
     }
 
 ?>
