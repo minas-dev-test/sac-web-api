@@ -12,7 +12,8 @@ CREATE TABLE `ticket` (
   `email` varchar(100) NOT NULL,
   `telefone` varchar(20) NOT NULL,
   `mensagem` text NOT NULL,
-  `aberto` tinyint(1) NOT NULL DEFAULT '1'
+  `aberto` tinyint(1) NOT NULL DEFAULT '1',
+  `subject` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
