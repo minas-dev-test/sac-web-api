@@ -30,11 +30,12 @@
         $email = $data->userEmail;
         $telefone = $data->userPhone;
         $mensagem = $data->userMessage;
-        if($nome == NULL || $email == NULL || $telefone == NULL || $mensagem == NULL){
+        $assunto = $data->ticketSubject;
+        if($nome == NULL || $email == NULL || $telefone == NULL || $mensagem == NULL || $assunto == NULL){
             header("invalidField: Campo(s) invalido(s)");
             return -1;
         }
-        return $controller->abrirTicket($nome, $email, $telefone, $mensagem);
+        return $controller->abrirTicket($nome, $email, $telefone, $mensagem, $assunto);
     });
     
     $router->on('PUT', 'tickets/(\w+)', function ($parameters) {
@@ -69,6 +70,7 @@
                 $outp[$key]["userPhone"] = $line[3];
                 $outp[$key]["userMessage"] = $line[4];
                 $outp[$key]["ticketStatus"] = $line[5];
+                $outp[$key]["ticketSubject"] = $line[6];
             }
             echo json_encode($outp);
         }else{ // Caso o db esteja vazio ou o caminho está incorreto

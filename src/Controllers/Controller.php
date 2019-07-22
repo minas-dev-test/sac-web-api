@@ -15,13 +15,14 @@
             $this->dataAccess = $dataAccess;            
         }
         
-        public function abrirTicket($nomeDoUsuario, $email, $telefone, $mensagem){
+        public function abrirTicket($nomeDoUsuario, $email, $telefone, $mensagem, $assunto){
             $ticket = new Ticket();
             $ticket->ticketId = uniqid();
             $ticket->nome = $nomeDoUsuario;
             $ticket->email = $email;
             $ticket->telefone = $telefone;
             $ticket->mensagem = $mensagem;
+            $ticket->assunto = $assunto;
 
             return $this->dataAccess->abrirTicket($ticket);
         }

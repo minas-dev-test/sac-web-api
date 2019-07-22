@@ -37,9 +37,9 @@
 
         public function abrirTicket($ticket){
             $sql = "INSERT INTO sac_web_api.ticket 
-                        (ticket_id,nome,email,telefone,mensagem)
+                        (ticket_id,nome,email,telefone,mensagem,assunto)
                     VALUES
-                        (?,?,?,?,?);";
+                        (?,?,?,?,?,?);";
             
             $stmt = $this->conn->prepare($sql);
 
@@ -47,7 +47,7 @@
                 return 0;
             }
 
-            $stmt->bind_param("sssss",$ticket->ticketId,$ticket->nome,$ticket->email,$ticket->telefone,$ticket->mensagem);
+            $stmt->bind_param("ssssss",$ticket->ticketId,$ticket->nome,$ticket->email,$ticket->telefone,$ticket->mensagem,$ticket->assunto);
             $stmt->execute();
             $stmt->close();
 
@@ -61,7 +61,8 @@
                         email Email,
                         telefone Telefone,
                         mensagem Mensagem,
-                        aberto Aberto
+                        aberto Aberto,
+                        assunto Assunto
                     FROM
                         sac_web_api.ticket;";
 

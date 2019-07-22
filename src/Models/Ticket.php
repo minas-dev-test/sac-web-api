@@ -10,6 +10,7 @@ class Ticket{
     public $telefone;
     public $mensagem;
     public $aberto;
+    public $assunto;
 
     public function setTicketId($ticketId){
         $this->ticketId = $ticketId;
