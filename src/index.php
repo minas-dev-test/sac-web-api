@@ -62,15 +62,86 @@
 
     if($_SERVER['REQUEST_METHOD'] == 'GET'){ // Transforma as informações em JSON
         $outp = [];
+        $cod = $_GET["cod"];
+        $limit = $_GET["limit"];
+        $skip = $_GET["skip"];
         if(is_array($value)){
+            $counter = 0;
+            $write = 1;
+            $skip_counter = 0;
+            $limit_counter = 0;
             foreach($value as $key => $line){
-                $outp[$key]["ticketId"] = $line[0];
-                $outp[$key]["userName"] = $line[1];
-                $outp[$key]["userEmail"] = $line[2];
-                $outp[$key]["userPhone"] = $line[3];
-                $outp[$key]["userMessage"] = $line[4];
-                $outp[$key]["ticketStatus"] = $line[5];
-                $outp[$key]["ticketSubject"] = $line[6];
+                if($cod == NULL){ // Retorna todos os tickets abertos
+                    if($line[5] == 1){
+                        $write = 1;
+                    }else{
+                        $write = 0;
+                    }
+                }else if($cod == "all"){ // Retorna todos os tickets 
+                    $write = 1;
+                }
+
+                if($skip != NULL && $limit != NULL){
+                    if($skip > $skip_counter){
+                        $write = 0;
+                    }else{
+                        if($limit <= $limit_counter){
+                            $write = 0;
+                        }
+                    }
+                }
+
+                if($_GET["id"] != NULL && $_GET["id"] != $line[0]){
+                    $write = 0;
+                }
+
+                if($_GET["name"] != NULL && $_GET["name"] != $line[1]){
+                    $write = 0;
+                }
+
+                if($_GET["email"] != NULL && $_GET["email"] != $line[2]){
+                    $write = 0;
+                }
+
+                if($_GET["phone"] != NULL && $_GET["phone"] != $line[3]){
+                    $write = 0;
+                }
+
+                if($_GET["message"] != NULL && $_GET["message"] != $line[4]){
+                    $write = 0;
+                }
+
+                if($_GET["status"] != NULL && $_GET["status"] != $line[5]){
+                    $write = 0;
+                }
+
+                if($_GET["subject"] != NULL && $_GET["subject"] != $line[6]){
+                    $write = 0;
+                }
+
+                if($write == 1){
+                    $outp[$counter]["ticketId"] = $line[0];
+                    $outp[$counter]["userName"] = $line[1];
+                    $outp[$counter]["userEmail"] = $line[2];
+                    $outp[$counter]["userPhone"] = $line[3];
+                    $outp[$counter]["userMessage"] = $line[4];
+                    $outp[$counter]["ticketStatus"] = $line[5];
+                    $outp[$counter]["ticketSubject"] = $line[6];
+                }
+
+                if($write == 1){
+                    $counter++;
+                }
+
+                if($skip != NULL && $limit != NULL){
+                    if($skip > $skip_counter){
+                        $skip_counter++;
+                    }else{
+                        if($write == 1){
+                            $limit_counter++;
+                        }
+                    }
+                }
             }
             echo json_encode($outp);
         }else{ // Caso o db esteja vazio ou o caminho está incorreto
