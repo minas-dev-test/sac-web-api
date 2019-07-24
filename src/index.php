@@ -26,11 +26,11 @@
         $controller = new Controller($dataAccess);
         $json = file_get_contents('php://input'); // Pega o body da requisição como uma string
         $data = json_decode($json); 
-        $nome = $data->userName;
-        $email = $data->userEmail;
-        $telefone = $data->userPhone;
-        $mensagem = $data->userMessage;
-        $assunto = $data->ticketSubject;
+        $nome = $data->name;
+        $email = $data->email;
+        $telefone = $data->phone;
+        $mensagem = $data->message;
+        $assunto = $data->subject;
         if($nome == NULL || $email == NULL || $telefone == NULL || $mensagem == NULL || $assunto == NULL){
             header("invalidField: Campo(s) invalido(s)");
             return -1;
@@ -120,13 +120,13 @@
                 }
 
                 if($write == 1){
-                    $outp[$counter]["ticketId"] = $line[0];
-                    $outp[$counter]["userName"] = $line[1];
-                    $outp[$counter]["userEmail"] = $line[2];
-                    $outp[$counter]["userPhone"] = $line[3];
-                    $outp[$counter]["userMessage"] = $line[4];
-                    $outp[$counter]["ticketStatus"] = $line[5];
-                    $outp[$counter]["ticketSubject"] = $line[6];
+                    $outp[$counter]["id"] = $line[0];
+                    $outp[$counter]["name"] = $line[1];
+                    $outp[$counter]["email"] = $line[2];
+                    $outp[$counter]["phone"] = $line[3];
+                    $outp[$counter]["message"] = $line[4];
+                    $outp[$counter]["status"] = $line[5];
+                    $outp[$counter]["subject"] = $line[6];
                 }
 
                 if($write == 1){
