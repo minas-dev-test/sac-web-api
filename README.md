@@ -15,11 +15,11 @@ Por padrão o projeto é inicializado na porta 5000 (<http://localhost:5000/tick
 - `/tickets`
   - `GET`: Retorna tickets abertos por padrão
     - Parâmetros (todos podem ser usados juntos):
-        - cod = all -> Retorna todos os tickets
+        - `cod=all` -> Retorna todos os tickets
         - Devem ser usados juntos
-        - skip -> pula uma quantidade de tickets
-        - limits -> retorna uma quantidade de tickets
-  - `POST`: Cadastra um novo ticket passando os campos `userName`, `userEmail`,`userPhone`, `userMessage`, `ticketSubject` em JSON
+        - `skip=x` -> pula uma quantidade `x` de tickets
+        - `limits=y` -> retorna uma quantidade `y` de tickets
+  - `POST`: Cadastra um novo ticket passando os campos `name`, `email`,`phone`, `message`, `subject` em JSON
   - `OPTIONS`: Atualmente retorna 200 OK para qualquer requisição e
     - access-control-allow-methods: POST, GET, OPTIONS, PUT, DELETE
     - access-control-allow-origin: *
