@@ -6,12 +6,6 @@ API de Serviço de atendimento ao cosumidor usando Docker
 
 Tenha em sua máquina instalado o Docker e o Docker Compose. Para iniciar o projeto execute:
 
-Caso seja a primeira vez:
-
-    docker-compose build
-
-Para iniciar:
-
     docker-compose up
 
 Por padrão o projeto é inicializado na porta 5000 (<http://localhost:5000/tickets>)
