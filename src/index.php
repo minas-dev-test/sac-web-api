@@ -91,6 +91,7 @@
                     }
                 }
 
+                // Testa se há algum parâmetro de busca
                 if($_GET["id"] != NULL && $_GET["id"] != $line[0]){
                     $write = 0;
                 }
