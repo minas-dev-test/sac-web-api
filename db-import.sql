@@ -6,7 +6,7 @@ START TRANSACTION;
 SET time_zone = "+00:00";
 
 
-CREATE TABLE `ticket` (
+CREATE TABLE IF NOT EXISTS `ticket` (
   `ticket_id` char(36) NOT NULL,
   `nome` varchar(80) NOT NULL,
   `email` varchar(100) NOT NULL,

@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: dockerFiles/web.dockerfile
 
+    image: sac-api/php-apache
+    
     ports:
         - 5000:80
     
@@ -16,7 +18,12 @@ services:
       - sac-db
   
     environment:
-      - ConnectionString=Server=sac-db;Port=3306;Database=sac_web_api;Uid=sac_web_api_ufjf;Pwd=s@cw3b4p1;
+      SAC_DB_HOST: sac-db
+      SAC_DB_PORT: 3306
+      SAC_DB_NAME: sac_web_api
+      SAC_DB_USER: sac_web_api_ufjf
+      SAC_DB_PASSWORD: s@cw3b4p1
+      
   sac-db:
     image: mysql:5.7
 

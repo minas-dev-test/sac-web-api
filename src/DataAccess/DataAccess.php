@@ -15,23 +15,15 @@
         private $conn;
 
         function __construct(){
-            // Recupera as variáveis de ambiente criadas no arquivo docker-compose.yml
-            $explode_result = explode(";", $_ENV["ConnectionString"]);
-            $env_variables = [];
-            foreach($explode_result as $variable){
-                $variable_explode = explode("=", $variable);
-                $env_variables[$variable_explode[0]] = $variable_explode[1];
-            }
-
-            $this->host = $env_variables["Server"];
-            $this->user = $env_variables["Uid"];
-            $this->password = $env_variables["Pwd"];
-            $this->database = $env_variables["Database"];
+            $this->host = $_ENV["SAC_DB_HOST"];
+            $this->user = $_ENV["SAC_DB_USER"];
+            $this->password = $_ENV["SAC_DB_PASSWORD"];
+            $this->database = $_ENV["SAC_DB_NAME"];
 
             $this->conn = new \mysqli($this->host, $this->user, $this->password, $this->database);
             
             if ($this->conn->connect_errno) {
-                echo "Failed to connect to MySQL: " . $this->conn->connect_error;
+                http_response_code(500);
             }
         }
 
