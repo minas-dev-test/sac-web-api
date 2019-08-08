@@ -38,8 +38,8 @@ class Router{
             }
         }
 
-        http_response_code(400);    
-        return null; // Caso essa rota não exista
+        http_response_code(404);    
+        return 'Not Found'; // Caso essa rota não exista
     }
 }
 

@@ -26,14 +26,28 @@
         $controller = new Controller($dataAccess);
         $json = file_get_contents('php://input'); // Pega o body da requisição como uma string
         $data = json_decode($json); 
+        $errors = [];
+
         $nome = $data->name;
         $email = $data->email;
         $telefone = $data->phone;
         $mensagem = $data->message;
         $assunto = $data->subject;
-        if($nome == NULL || $email == NULL || $telefone == NULL || $mensagem == NULL || $assunto == NULL){
+
+        if(!$nome == NULL)
+            $errors['nome'] = 'Campo obrigatório';
+        if(!$email == NULL)
+            $errors['email'] = 'Campo obrigatório';
+        if(!$telefone == NULL)
+            $errors['telefone'] = 'Campo obrigatório';
+        if(!$mensagem == NULL)
+            $errors['mensagem'] = 'Campo obrigatório';
+        if(!$assunto == NULL)
+            $errors['assunto'] = 'Campo obrigatório';
+
+        if($errors){
             header("invalidField: Campo(s) invalido(s)");
-            return -1;
+            return $errors;
         }
         return $controller->abrirTicket($nome, $email, $telefone, $mensagem, $assunto);
     });

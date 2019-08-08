@@ -12,6 +12,7 @@
         private $user;
         private $password;
         private $database;
+        private $port;
         private $conn;
 
         function __construct(){
@@ -19,8 +20,9 @@
             $this->user = $_ENV["SAC_DB_USER"];
             $this->password = $_ENV["SAC_DB_PASSWORD"];
             $this->database = $_ENV["SAC_DB_NAME"];
+            $this->port = $_ENV["SAC_DB_PORT"];
 
-            $this->conn = new \mysqli($this->host, $this->user, $this->password, $this->database);
+            $this->conn = new \mysqli($this->host, $this->user, $this->password, $this->database, $this->port);
             
             if ($this->conn->connect_errno) {
                 http_response_code(500);
@@ -62,9 +64,9 @@
             $result = $result->fetch_all();
             
             $this->conn->close();
-            if($result == NULL){
-                return 0;
-            }
+            // if($result == NULL){
+            //     return 0;
+            // }
             return $result;
         }
 

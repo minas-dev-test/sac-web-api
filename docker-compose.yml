@@ -4,9 +4,10 @@ services:
   sac-api:
     build:
       context: .
-      dockerfile: dockerFiles/web.dockerfile
+      dockerfile: docker/web.dockerfile
 
     image: sac-api/php-apache
+    restart: unless-stopped
     
     ports:
         - 5000:80
@@ -21,11 +22,13 @@ services:
       SAC_DB_HOST: sac-db
       SAC_DB_PORT: 3306
       SAC_DB_NAME: sac_web_api
-      SAC_DB_USER: sac_web_api_ufjf
-      SAC_DB_PASSWORD: s@cw3b4p1
+      SAC_DB_USER: root
+      SAC_DB_PASSWORD: root
       
   sac-db:
     image: mysql:5.7
+    restart: unless-stopped
+    command: --log_error_verbosity=1
 
     volumes:
       - ./database:/var/lib/mysql
