@@ -66,7 +66,7 @@
         $limit = $_GET["limit"];
         $skip = $_GET["skip"];
 	if($value === null){ // Se a rota não existe
-	    http_response_code(401);
+	    http_response_code(404);
 	    header("error: nonexistent route");
 	}else if($value === 0){ // Problema de comunicação com o bd
 	    http_response_code(500);
@@ -154,7 +154,7 @@
         }
     }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if($value === null){ // Se a rota não existe
-            http_response_code(401);
+            http_response_code(404);
 	    header("error: nonexistent route");
 	}else if($value === 0){ // Se houve um erro interno no processamento da req 
             http_response_code(500);
@@ -166,7 +166,7 @@
         }
     }else if($_SERVER['REQUEST_METHOD'] == 'PUT'){
         if($value === null){ // Se a rota não existe
-	    http_response_code(401);
+	    http_response_code(404);
         }else if($value === 0){ // Se houve um erro interno no processamento da req
             http_response_code(500);
         }else{ // Se foi bem sucedido
@@ -174,7 +174,7 @@
         }
     }else if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
 	if($value === null){ // Se a rota não existe
-	    http_response_code(401);
+	    http_response_code(404);
 	    header("error: nonexistent route");
 	}else if($value === 0){ // Se houve erro interno no processamento da req
             http_response_code(500);
