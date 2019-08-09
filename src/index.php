@@ -145,8 +145,8 @@
                 }
             }
             echo json_encode($outp);
-        }else{ // Caso o db esteja vazio ou o caminho está incorreto
-            http_response_code(204);
+        }else{
+            http_response_code(200);
         }
     }else if($_SERVER['REQUEST_METHOD'] == 'POST'){
         if($value == 0 ){
@@ -160,13 +160,13 @@
         if($value == 0){
             http_response_code(500);
         }else{
-            http_response_code(204);
+            http_response_code(200);
         }
     }else if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
         if($value == 0){
             http_response_code(500);
         }else{
-            http_response_code(204);            
+            http_response_code(200);            
         }
     }
 
