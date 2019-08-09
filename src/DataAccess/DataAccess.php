@@ -24,6 +24,8 @@
             
             if ($this->conn->connect_errno) {
                 http_response_code(500);
+		$error = $this->conn->connect_error;
+		header("error: $error");
             }
         }
 
@@ -57,15 +59,19 @@
                         assunto Assunto
                     FROM
                         sac_web_api.ticket;";
-
-            $result = $this->conn->query($sql);
-            $result = $result->fetch_all();
-            
-            $this->conn->close();
-            if($result == NULL){
-                return 0;
-            }
-            return $result;
+	    if($this->conn){
+	    	$result = $this->conn->query($sql);
+		if($result == null){ // Problema de comunicação com o bd
+			$this->conn->close();                	
+			return 0;
+            	}            	
+		$result = $result->fetch_all();
+            	
+            	$this->conn->close();
+            	
+            	return $result;
+	    }
+            return -1; // A conexão não foi estabelecida mas o erro já foi tratado no construtor
         }
 
         public function fecharTicket($id){

@@ -26,8 +26,7 @@ class Router{
 
     function run($method, $uri){
         $method = strtolower($method);
-        if(!isset($this->routes[$method])){ // Caso não existam rotas para esse método
-            http_response_code(400);    
+        if(!isset($this->routes[$method])){ // Caso não existam rotas para esse método   
             return null;
         }
 
@@ -37,8 +36,7 @@ class Router{
                 return call_user_func_array($callback, $parameters);
             }
         }
-
-        http_response_code(400);    
+  
         return null; // Caso essa rota não exista
     }
 }
