@@ -12,7 +12,7 @@
 		public static function getInstance(){
 			if($uniqueInstance == null)
 				$uniqueInstance = new Response();			
-			$uniqueInstance->changeStatus("200");		
+			$uniqueInstance->status("200");		
 			return $uniqueInstance;
 		} 
 
@@ -39,14 +39,22 @@
 			array_push($this->$data["error"], $desc);
 		}
 
-		public function changeStatus($status){
+		public function status($status){
 			$this->$data["status"] = $status;
 		}
 
 		public function clearData(){
 			$this->$data = [];
 		}
-
+		
+		public function send($response){
+			http_response_code($response->$data["status"]);
+			foreach($response->$data["header"] as $key => $value){
+				header("$key: $value");
+			}
+			if($response->$data["body"] != null)
+				echo json_encode($response->$data["body"]);
+		}	
 	}
 
 

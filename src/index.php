@@ -21,13 +21,13 @@
 	$response->clearData();
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
-	$response->changeStatus("200");
+	$response->status("200");
 	$respManager = new ResponseManager();
 	//====================================	
 	try{
         	$dataAccess = new DataAccess();
 	}catch(Exception $e){
-		$response->changeStatus(500);
+		$response->status(500);
 		$aux = $e->getMessage();
 		$response->addError("$aux");
 		$respManager->send($response);
@@ -43,7 +43,7 @@
         $skip = $_GET["skip"];
 	//====================================
 	if($value === 0){ // Problema de comunicação com o bd
-	    $response->changeStatus(500);
+	    $response->status(500);
             $response->addError("db comunnication problem");
 	}else if(is_array($value)){ // Acesso ao bd foi bem sucedido
             $write = 1; // 1 -> Adiciona informação para retorno/ 0 -> Não
@@ -134,13 +134,13 @@
 	$response->clearData();
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
-	$response->changeStatus("200");
+	$response->status("200");
 	$respManager = new ResponseManager(); 
 	//====================================
         try{
         	$dataAccess = new DataAccess();
 	}catch(Exception $e){
-		$response->changeStatus(500);
+		$response->status(500);
 		$aux = $e->getMessage();
 		$response->addError("$aux");
 		$respManager->send($response);
@@ -174,17 +174,17 @@
 	    if($assunto == null){
 		$response->addHeader("subject", "invalid subject");
 	    }
-	    $response->changeStatus(400);
+	    $response->status(400);
 	    $respManager->send($response);
  	    return;
         }
 	//=================================================================
         $value = $controller->abrirTicket($nome, $email, $telefone, $mensagem, $assunto); // Acesso ao bd
 	if($value === 0){ // Se houve um erro interno no processamento da req 
-            $response->changeStatus(500);
+            $response->status(500);
 	    $response->addError("db statement cannot be prepared");
         }else{ // Se foi bem sucedido
-            $response->changeStatus(201);    
+            $response->status(201);    
         }
 	$respManager->send($response);
     });
@@ -195,13 +195,13 @@
 	$response->clearData();
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
-	$response->changeStatus("200");
+	$response->status("200");
 	$respManager = new ResponseManager();
 	//====================================        
 	try{
         	$dataAccess = new DataAccess();
 	}catch(Exception $e){
-		$response->changeStatus(500);
+		$response->status(500);
 		$aux = $e->getMessage();
 		$response->addError("$aux");
 		$respManager->send($response);
@@ -210,9 +210,9 @@
         $controller = new Controller($dataAccess);
         $value = $controller->fecharTicket($parameters); // Acesso ao bd
         if($value === 0){ // Se houve um erro interno no processamento da req
-            $response->changeStatus(500);
+            $response->status(500);
         }else{ // Se foi bem sucedido
-            $response->changeStatus(200);
+            $response->status(200);
         }
     });
 
@@ -222,13 +222,13 @@
 	$response->clearData();
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
-	$response->changeStatus("200");
+	$response->status("200");
 	$respManager = new ResponseManager();
 	//====================================        
 	try{
         	$dataAccess = new DataAccess();
 	}catch(Exception $e){
-		$response->changeStatus(500);
+		$response->status(500);
 		$aux = $e->getMessage();
 		$response->addError("$aux");
 		$respManager->send($response);
@@ -237,10 +237,10 @@
         $controller = new Controller($dataAccess);
         $value = $controller->excluirTicket($parameters);
 	if($value === 0){ // Se houve erro interno no processamento da req
-            $response->changeStatus(500);
+            $response->status(500);
 	    $response->addError("db statement cannot be prepared");
         }else{ // Se foi bem sucedido
-            $response->changeStatus(200);           
+            $response->status(200);           
         }
     });
     
@@ -250,7 +250,7 @@
 	$response->clearData();
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
-	$response->changeStatus("200");
+	$response->status("200");
 	$respManager = new ResponseManager();     		
 	$response->addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
         $response->addHeader("Access-Control-Max-Age", "86400");
