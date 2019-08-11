@@ -21,11 +21,9 @@
             $this->database = $_ENV["SAC_DB_NAME"];
 
             $this->conn = new \mysqli($this->host, $this->user, $this->password, $this->database);
-            
             if ($this->conn->connect_errno) {
-                http_response_code(500);
-		$error = $this->conn->connect_error;
-		header("error: $error");
+		$aux = $this->conn->connect_error;
+		throw new \Exception("$aux");
             }
         }
 
@@ -59,19 +57,19 @@
                         assunto Assunto
                     FROM
                         sac_web_api.ticket;";
-	    if($this->conn){
-	    	$result = $this->conn->query($sql);
-		if($result == null){ // Problema de comunicação com o bd
-			$this->conn->close();                	
-			return 0;
-            	}            	
-		$result = $result->fetch_all();
+
+	    $result = $this->conn->query($sql);
+
+	    if($result === null){ // Problema de comunicação com o bd
+		$this->conn->close();                	
+		return 0;
+            }
+
+	    $result = $result->fetch_all();
+ 
+            $this->conn->close();
             	
-            	$this->conn->close();
-            	
-            	return $result;
-	    }
-            return -1; // A conexão não foi estabelecida mas o erro já foi tratado no construtor
+            return $result;
         }
 
         public function fecharTicket($id){
