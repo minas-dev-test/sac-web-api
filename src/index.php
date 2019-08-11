@@ -2,13 +2,11 @@
     use SAC_WebAPI\Controllers\Controller;
     use SAC_WebAPI\DataAccess\DataAccess;
     use SAC_WebAPI\Response\Response;
-    use SAC_WebAPI\ResponseManager\ResponseManager;
 
     include_once './Models/Ticket.php';
     include_once './DataAccess/DataAccess.php';
     include_once './Controllers/Controller.php';
     include_once './Response/Response.php';
-    include_once './Response/ResponseManager.php';
 
     require __DIR__ . '/vendor/autoload.php';
 
@@ -22,7 +20,6 @@
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
 	$response->status("200");
-	$respManager = new ResponseManager();
 	//====================================	
 	try{
         	$dataAccess = new DataAccess();
@@ -30,7 +27,7 @@
 		$response->status(500);
 		$aux = $e->getMessage();
 		$response->addError("$aux");
-		$respManager->send($response);
+		$response->send($response);
 		return;
 	}        
 	$controller = new Controller($dataAccess);
@@ -124,7 +121,7 @@
 		}
 		
             }
-	    $respManager->send($response);
+	    $response->send($response);
         }
     });
     
@@ -135,7 +132,6 @@
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
 	$response->status("200");
-	$respManager = new ResponseManager(); 
 	//====================================
         try{
         	$dataAccess = new DataAccess();
@@ -143,7 +139,7 @@
 		$response->status(500);
 		$aux = $e->getMessage();
 		$response->addError("$aux");
-		$respManager->send($response);
+		$response->send($response);
 		return;
 	}    
         $controller = new Controller($dataAccess);
@@ -160,7 +156,7 @@
 	if($nome == null || $email == null || $telefone == null || $mensagem == null || $assunto == null){
             $response->addHeader("invalidField", "null field not supported");
       	    if($nome == null){
-	    	$response->addHeader("name", "invalid name");
+	    	$respone->addHeader("name", "invalid name");
 	    }
 	    if($email == null){
 	    	$response->addHeader("email", "invalid email");
@@ -175,7 +171,7 @@
 		$response->addHeader("subject", "invalid subject");
 	    }
 	    $response->status(400);
-	    $respManager->send($response);
+	    $response->send($response);
  	    return;
         }
 	//=================================================================
@@ -186,7 +182,7 @@
         }else{ // Se foi bem sucedido
             $response->status(201);    
         }
-	$respManager->send($response);
+	$response->send($response);
     });
     
     $router->put('/tickets/(\w+)', function ($parameters) {
@@ -196,7 +192,6 @@
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
 	$response->status("200");
-	$respManager = new ResponseManager();
 	//====================================        
 	try{
         	$dataAccess = new DataAccess();
@@ -223,7 +218,6 @@
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
 	$response->status("200");
-	$respManager = new ResponseManager();
 	//====================================        
 	try{
         	$dataAccess = new DataAccess();
@@ -250,8 +244,7 @@
 	$response->clearData();
 	$response->addHeader("Access-Control-Allow-Origin", "*");
 	$response->addHeader("Content-Type", "application/json; charset=UTF-8");
-	$response->status("200");
-	$respManager = new ResponseManager();     		
+	$response->status("200");   		
 	$response->addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE");
         $response->addHeader("Access-Control-Max-Age", "86400");
 	//====================================		
