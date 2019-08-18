@@ -3,57 +3,54 @@
 
 	class Response{
 
-		public $data;
-		private static $uniqueInstance;
+		private $body, $status, $header, $error; 
 		
-		private function __construct(){
+		public function __construct(){
+			$this->body = [];
+			$this->data = [];
+			$this->error["error"] = [];
+			$this->header = [];
+			$this->status = 200;
+			
+			$this->header[] = "Access-Control-Allow-Origin: *";
+			$this->header[] = "Content-Type: application/json; charset=UTF-8";
 		}
 
-		public static function getInstance(){
-			if($uniqueInstance == null)
-				$uniqueInstance = new Response();			
-			$uniqueInstance->status("200");		
-			return $uniqueInstance;
-		} 
-
-		public function addInfo($array){
-			if($this->$data["body"] == null){
-				$this->$data["body"] = [];			
-			}
-			array_push($this->$data["body"], $array);
+		public function body($body){
+			$this->body[] = $body;
+			return $this;
 		}    
 
 
-		public function addHeader($name, $content){
-			if($this->$data["header"] ==  null){
-				$this->$data["header"] = [];
-			}
-			$this->$data["header"][$name] = $content;
+		public function header($header){ // Tem que aceitar array?
+			$this->header[] = $header;
+			return $this;			
 		}
 
 
-		public function addError($desc){
-			if($this->$data["error"] == null){
-				$this->$data["error"] = [];
-			}
-			array_push($this->$data["error"], $desc);
+		public function error($error){
+			$this->error["error"][] = $error;
+			return $this;
 		}
 
 		public function status($status){
-			$this->$data["status"] = $status;
+			$this->status = $status;
+			return $this;
 		}
 
-		public function clearData(){
-			$this->$data = [];
-		}
-		
-		public function send($response){
-			http_response_code($response->$data["status"]);
-			foreach($response->$data["header"] as $key => $value){
-				header("$key: $value");
+		public function send($send = null){
+			if($send != null) // Deve substituir o conteudo do body?
+				$this->body = $send;
+
+			http_response_code($this->status);
+			foreach($this->header as $value){
+				header($value);
 			}
-			if($response->$data["body"] != null)
-				echo json_encode($response->$data["body"]);
+			
+			if(!empty($this->error["error"]))
+				$this->body[] = $this->error;
+
+			echo json_encode($this->body);
 		}	
 	}
 

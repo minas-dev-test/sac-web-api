@@ -22,8 +22,7 @@
 
             $this->conn = new \mysqli($this->host, $this->user, $this->password, $this->database);
             if ($this->conn->connect_errno) {
-		$aux = $this->conn->connect_error;
-		throw new \Exception("$aux");
+		        throw new \Exception($this->conn->connect_error);
             }
         }
 
@@ -36,14 +35,14 @@
             $stmt = $this->conn->prepare($sql);
 
             if(!$stmt){
-                return 0;
+                throw new \Exception("db stmt preparation failed");
+                return;
             }
 
             $stmt->bind_param("ssssss",$ticket->ticketId,$ticket->nome,$ticket->email,$ticket->telefone,$ticket->mensagem,$ticket->assunto);
             $stmt->execute();
             $stmt->close();
 
-            return 1;
         }
 
         public function getTodosTickets(){
@@ -58,17 +57,16 @@
                     FROM
                         sac_web_api.ticket;";
 
-	    $result = $this->conn->query($sql);
+            $result = $this->conn->query($sql);
 
-	    if($result === null){ // Problema de comunicação com o bd
-		$this->conn->close();                	
-		return 0;
+            if(!$result){
+                throw new \Exception("db query failed");
+                $this->conn->close();
+                return;
             }
 
-	    $result = $result->fetch_all();
- 
+	        $result = $result->fetch_all();
             $this->conn->close();
-            	
             return $result;
         }
 
@@ -78,7 +76,8 @@
             $stmt = $this->conn->prepare($sql);
         
             if(!$stmt){
-                return 0;
+                throw new \Exception("db stmt preparation failed");
+                return;
             }
 
             $stmt->bind_param("s",$id);
@@ -94,7 +93,8 @@
             $stmt = $this->conn->prepare($sql);
 
             if(!$stmt){
-                return 0;
+                throw new \Exception("db stmt preparation failed");
+                return;
             }
             
             $stmt->bind_param("s",$id);
