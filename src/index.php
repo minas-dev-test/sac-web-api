@@ -2,23 +2,25 @@
     use SAC_WebAPI\Controllers\Controller;
     use SAC_WebAPI\DataAccess\DataAccess;
     use SAC_WebAPI\Response\Response;
+	use SAC_WebAPI\Exceptions\InvalidTicketException;
 
     include_once './Models/Ticket.php';
     include_once './DataAccess/DataAccess.php';
     include_once './Controllers/Controller.php';
     include_once './Response/Response.php';
+    include_once './Exceptions/InvalidTicketException.php';
 
     require __DIR__ . '/vendor/autoload.php';
 
     $router = new \Bramus\Router\Router();
     	
     $router->get('/tickets', function () {
-		$response = new Response();	
+		$response = new Response();
 
 		try{
 			$dataAccess = new DataAccess();
+			$dataAccess->connect();
 			$controller = new Controller($dataAccess);
-			$response->error("Erro critico A")->error("Erro critico B");
 			$response->send($controller->getTodosTickets());
 		}catch(Exception $e){		
 			$response->status(500)->error($e->getMessage())->send();		
@@ -30,7 +32,8 @@
 		$response = new Response();
 		
 		try{
-        	$dataAccess = new DataAccess();
+			$dataAccess = new DataAccess();
+			$dataAccess->connect();
 			$controller = new Controller($dataAccess);
 			$json = file_get_contents('php://input'); // Pega o body da requisição como uma string
 			$data = json_decode($json);
@@ -39,33 +42,12 @@
 			$telefone = $data->phone;
 			$mensagem = $data->message;
 			$assunto = $data->subject;
-	
-			$valid = [];
-			
-			if($nome == null){
-				$valid["name"] = "invalid name";
-			}
-			if($email == null){
-				$valid["email"] = "invalid email";
-			}
-			if($telefone == null){
-				$valid["phone"] = "invalid phone";
-			}
-			if($mensagem == null){
-				$valid["message"] = "invalid message";
-			}
-			if($assunto == null){
-				$valid["subject"] = "invalid subject";
-			}
 
-			if(!empty($valid)){
-				$valid["invalidField"] = "null field not supported";
-				$response->status(400)->send($valid);			
-				return;
-			}
-			
-			$controller->abrirTicket($nome, $email, $telefone, $mensagem, $assunto);
+			$valid = $controller->abrirTicket($nome, $email, $telefone, $mensagem, $assunto);
 			$response->status(201)->send();
+
+		}catch(InvalidTicketException $e){
+			$response->status(400)->send($e->getData());	
 		}catch(Exception $e){
 			$response->status(500)->error($e->getMessage())->send();
 		}
@@ -76,6 +58,7 @@
 		$response = new Response();
 		try{
 			$dataAccess = new DataAccess();
+			$dataAccess->connect();
 			$dataAccess->fecharTicket($parameters);
 			$response->send();
 		}catch(Exception $e){
@@ -88,6 +71,7 @@
 		$response = new Response();
 		try{
 			$dataAccess = new DataAccess();
+			$dataAccess->connect();
 			$dataAccess->excluirTicket($parameters);
 			$response->send();
 		}catch(Exception $e){

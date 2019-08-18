@@ -15,6 +15,9 @@
         private $conn;
 
         function __construct(){
+        }
+
+        public function connect(){
             $this->host = $_ENV["SAC_DB_HOST"];
             $this->user = $_ENV["SAC_DB_USER"];
             $this->password = $_ENV["SAC_DB_PASSWORD"];
