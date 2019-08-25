@@ -13,7 +13,7 @@
     class Controller{
         private $dataAccess;
 
-        function __construct(){
+        function __construct($dataAccess){
             $this->dataAccess = $dataAccess;            
         }
         
@@ -110,9 +110,9 @@
 					$info["id"] = $line[0];
 					$info["name"] = $line[1];
 					$info["email"] = $line[2];
-					$info["phone"] = $line[3];
+					$info["phone"] = (int) $line[3];
 					$info["message"] = $line[4];
-					$info["status"] = $line[5];
+					$info["status"] = (int) $line[5];
 					$info["subject"] = $line[6];
 					$resp[] = $info;
 				}
