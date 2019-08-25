@@ -107,6 +107,97 @@
             return $id;         
         }
 
+        public function getTickets(){
+            $sql = "SELECT
+                        ticket_id TicketId,
+                        nome NomeDeUsuario,
+                        email Email,
+                        telefone Telefone,
+                        mensagem Mensagem,
+                        aberto Aberto,
+                        assunto Assunto
+                    FROM
+                        sac_web_api.ticket";
+
+            $cod = $_GET["cod"];
+            $limit = $_GET["limit"];
+            $skip = $_GET["skip"];
+            $pag_sql = "";
+
+            if($limit != null && $skip != null){
+                $pag_sql = $pag_sql." LIMIT $limit";
+                $pag_sql = $pag_sql." OFFSET $skip";
+
+            }
+
+            $sql = $sql.$pag_sql;
+
+            $search_sql = [];
+
+            $id = $_GET["id"];
+            if($id != null){
+                $search_sql[] = "ticket_id='$id'"; 
+            }
+
+            $nome = $_GET["name"];
+            if($nome != null){
+                $search_sql[] = "nome='$nome'";
+            }
+
+            $email = $_GET["email"];
+            if($email != null){
+                $search_sql[] = "email='$email'";
+            }
+
+            $phone = $_GET["phone"];
+            if($phone != null){
+                $search_sql[] = "telefone='$phone'";
+            }
+
+            $message = $_GET["message"];
+            if($message != null){
+                $search_sql[] = "mensagem='$message'";
+            }
+
+            $status = $_GET["status"];
+            if($status != null){
+                $search_sql[] = "aberto=$status";
+            }else if($cod != "all"){
+                $search_sql[] = "aberto=1";
+            }
+
+            $subject = $_GET["subject"];
+            if($subject != null){
+                $search_sql[] = "assunto='$subject'";
+            }
+
+            
+            if(!empty($search_sql) && $limit == null && $skip == null){
+                $aux = array_pop($search_sql);
+                $sql = $sql." WHERE $aux";
+                foreach($search_sql as $value){
+                    $sql = $sql." AND $value";
+                }
+            }            
+
+            $sql = $sql.";";
+
+            // echo $sql;
+
+            $result = $this->conn->query($sql);
+
+            if(!$result){
+                throw new \Exception("db query failed");
+                $this->conn->close();
+                return;
+            }
+
+	        $result = $result->fetch_all();        
+            $this->conn->close();
+			return $result;
+
+        }
+
     }
 
 ?>
