@@ -119,9 +119,9 @@
                     FROM
                         sac_web_api.ticket";
 
-            $cod = $_GET["cod"];
-            $limit = $_GET["limit"];
-            $skip = $_GET["skip"];
+            $cod = mysqli_real_escape_string($this->conn, $_GET["cod"]);
+            $limit = mysqli_real_escape_string($this->conn, $_GET["limit"]);
+            $skip = mysqli_real_escape_string($this->conn, $_GET["skip"]);
             $pag_sql = "";
 
             if($limit != null && $skip != null){
@@ -134,39 +134,39 @@
 
             $search_sql = [];
 
-            $id = $_GET["id"];
+            $id = mysqli_real_escape_string($this->conn, $_GET["id"]);
             if($id != null){
                 $search_sql[] = "ticket_id='$id'"; 
             }
 
-            $nome = $_GET["name"];
+            $nome = mysqli_real_escape_string($this->conn, $_GET["name"]);
             if($nome != null){
                 $search_sql[] = "nome='$nome'";
             }
 
-            $email = $_GET["email"];
+            $email = mysqli_real_escape_string($this->conn, $_GET["email"]);
             if($email != null){
                 $search_sql[] = "email='$email'";
             }
 
-            $phone = $_GET["phone"];
+            $phone = mysqli_real_escape_string($this->conn, $_GET["phone"]);
             if($phone != null){
                 $search_sql[] = "telefone='$phone'";
             }
 
-            $message = $_GET["message"];
+            $message = mysqli_real_escape_string($this->conn, $_GET["message"]);
             if($message != null){
                 $search_sql[] = "mensagem='$message'";
             }
 
-            $status = $_GET["status"];
+            $status = mysqli_real_escape_string($this->conn, $_GET["status"]);
             if($status != null){
                 $search_sql[] = "aberto=$status";
             }else if($cod != "all"){
                 $search_sql[] = "aberto=1";
             }
 
-            $subject = $_GET["subject"];
+            $subject = mysqli_real_escape_string($this->conn, $_GET["subject"]);
             if($subject != null){
                 $search_sql[] = "assunto='$subject'";
             }
@@ -181,8 +181,6 @@
             }            
 
             $sql = $sql.";";
-
-            // echo $sql;
 
             $result = $this->conn->query($sql);
 
