@@ -18,8 +18,7 @@
 		$response = new Response();
 
 		try{
-			$dataAccess = new DataAccess();
-			$dataAccess->connect();
+			$dataAccess = DataAccess::getInstance();
 			$controller = new Controller($dataAccess);
 			$response->send($controller->getTodosTickets());
 		}catch(Exception $e){		
@@ -32,8 +31,7 @@
 		$response = new Response();
 		
 		try{
-			$dataAccess = new DataAccess();
-			$dataAccess->connect();
+			$dataAccess = DataAccess::getInstance();
 			$controller = new Controller($dataAccess);
 			$json = file_get_contents('php://input'); // Pega o body da requisição como uma string
 			$data = json_decode($json);
@@ -57,8 +55,7 @@
     $router->put('/tickets/(\w+)', function ($parameters) {
 		$response = new Response();
 		try{
-			$dataAccess = new DataAccess();
-			$dataAccess->connect();
+			$dataAccess = DataAccess::getInstance();
 			$dataAccess->fecharTicket($parameters);
 			$response->send();
 		}catch(Exception $e){
@@ -70,8 +67,7 @@
     $router->delete('/tickets/(\w+)', function ($parameters) {
 		$response = new Response();
 		try{
-			$dataAccess = new DataAccess();
-			$dataAccess->connect();
+			$dataAccess = DataAccess::getInstance();
 			$dataAccess->excluirTicket($parameters);
 			$response->send();
 		}catch(Exception $e){

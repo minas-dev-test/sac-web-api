@@ -8,13 +8,24 @@
 
     class DataAccess{
 
+        public static $instance;
+
         private $host;
         private $user;
         private $password;
         private $database;
         private $conn;
 
-        function __construct(){
+        private function __construct(){
+        }
+
+        public static function getInstance(){
+            if(!isset(self::$instance)){
+                self::$instance = new DataAccess();
+                self::$instance->connect();
+            }
+
+            return self::$instance;
         }
 
         public function connect(){
